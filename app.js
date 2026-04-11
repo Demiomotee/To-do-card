@@ -1,14 +1,13 @@
-// ── Time remaining ──────────────────────────────────────
+// ── Time remaining ─────────────────────────────────────
 
-const DUE_DATE = new Date('2026-04-18T17:00:00Z');
+var DUE_DATE = new Date('2026-04-18T17:00:00Z');
 
 function getTimeText() {
-  const diff = DUE_DATE - Date.now();
-  const abs  = Math.abs(diff);
-
-  const mins  = Math.floor(abs / 60000);
-  const hours = Math.floor(abs / 3600000);
-  const days  = Math.floor(abs / 86400000);
+  var diff  = DUE_DATE - Date.now();
+  var abs   = Math.abs(diff);
+  var mins  = Math.floor(abs / 60000);
+  var hours = Math.floor(abs / 3600000);
+  var days  = Math.floor(abs / 86400000);
 
   if (abs < 60000) return { text: 'Due now!', cls: 'time-now' };
 
@@ -26,56 +25,80 @@ function getTimeText() {
 }
 
 function updateTimeChip() {
-  var chip = document.getElementById('time-remaining');
+  var chip   = document.getElementById('time-remaining');
   var result = getTimeText();
   chip.textContent = result.text;
-  chip.className = 'time-chip ' + result.cls;
+  chip.className   = 'time-chip ' + result.cls;
 }
 
 updateTimeChip();
 setInterval(updateTimeChip, 60000);
 
 
-// ── Checkbox toggle ─────────────────────────────────────
+// ── Checkbox / status logic ────────────────────────────
 
-var checkbox = document.getElementById('todo-complete');
-var card     = document.getElementById('todo-card');
-var status   = document.getElementById('todo-status');
-var mainText = document.getElementById('main-todo-text');
+var checkboxes = document.querySelectorAll('.task-checkbox');
+var card       = document.getElementById('todo-card');
+var status     = document.getElementById('todo-status');
 
-checkbox.addEventListener('change', function() {
-  if (this.checked) {
-    card.classList.add('completed');
-    status.textContent = 'Done';
-    status.className = 'badge status-done';
-    status.setAttribute('aria-label', 'Status: Done');
-  } else {
+function updateStatus() {
+  var total   = checkboxes.length;
+  var checked = 0;
+
+  checkboxes.forEach(function(cb) {
+    if (cb.checked) checked++;
+  });
+
+  if (checked === 0) {
+    status.textContent = 'Pending';
+    status.className   = 'badge status-pending';
+    status.setAttribute('aria-label', 'Status: Pending');
     card.classList.remove('completed');
+  } else if (checked < total) {
     status.textContent = 'In Progress';
-    status.className = 'badge status-progress';
+    status.className   = 'badge status-progress';
     status.setAttribute('aria-label', 'Status: In Progress');
+    card.classList.remove('completed');
+  } else {
+    status.textContent = 'Done';
+    status.className   = 'badge status-done';
+    status.setAttribute('aria-label', 'Status: Done');
+    card.classList.add('completed');
   }
+}
+
+checkboxes.forEach(function(cb) {
+  cb.addEventListener('change', updateStatus);
 });
 
 
-// ── Dark / Light theme toggle ───────────────────────────
+// ── Dark / Light toggle ────────────────────────────────
 
-var toggleBtn  = document.getElementById('theme-toggle');
-var toggleIcon = document.getElementById('toggle-icon');
-var html       = document.documentElement;
+var toggleBtn   = document.getElementById('theme-toggle');
+var iconMoon    = document.getElementById('icon-moon');
+var iconSun     = document.getElementById('icon-sun');
+var toggleLabel = document.getElementById('toggle-label');
+var html        = document.documentElement;
 
-// Load saved preference
-var saved = localStorage.getItem('theme');
-if (saved) {
-  html.setAttribute('data-theme', saved);
-  toggleIcon.textContent = saved === 'dark' ? '☀️' : '🌙';
+function applyTheme(theme) {
+  html.setAttribute('data-theme', theme);
+  if (theme === 'dark') {
+    iconMoon.style.display  = 'none';
+    iconSun.style.display   = 'block';
+    toggleLabel.textContent = 'Light';
+  } else {
+    iconMoon.style.display  = 'block';
+    iconSun.style.display   = 'none';
+    toggleLabel.textContent = 'Dark';
+  }
 }
+
+var saved = localStorage.getItem('theme') || 'light';
+applyTheme(saved);
 
 toggleBtn.addEventListener('click', function() {
   var current = html.getAttribute('data-theme');
   var next    = current === 'dark' ? 'light' : 'dark';
-
-  html.setAttribute('data-theme', next);
-  toggleIcon.textContent = next === 'dark' ? '☀️' : '🌙';
+  applyTheme(next);
   localStorage.setItem('theme', next);
 });
