@@ -9,12 +9,11 @@
 </head>
 <body>
 
-  
   <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
-    <svg id="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <svg id="icon-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
-    <svg id="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="display:none">
+    <svg id="icon-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="display:none">
       <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
       <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
     </svg>
@@ -25,46 +24,29 @@
 
     <!-- LEFT PANEL -->
     <div class="left-panel">
-
       <div class="date-block">
         <span class="day-number">18</span>
         <span class="day-name">Friday</span>
+        <span class="day-month">April</span>
       </div>
-
-      <hr class="panel-divider" />
-
-      <div class="left-stats">
-        <div class="stat-item">
-          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <rect x="1" y="3" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M5 1v3M11 1v3M1 7h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-          <span>0 Events</span>
-        </div>
-        <div class="stat-item">
-          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <rect x="1" y="1" width="14" height="14" rx="3" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M4.5 8l2.5 2.5 4.5-4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <span>2 To-dos</span>
-        </div>
+      <div class="todo-count">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <rect x="1" y="1" width="14" height="14" rx="3" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M4.5 8l2.5 2.5 4.5-4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>2 To-dos</span>
       </div>
-
     </div>
 
     <!-- RIGHT PANEL -->
     <div class="right-panel">
 
       <!-- Title + badges -->
-      <div class="right-header">
-        <div class="title-row">
-          <h2 id="todo-title" data-testid="test-todo-title">
-            Redesign Onboarding Flow
-          </h2>
-          <div class="header-badges">
-            <span data-testid="test-todo-priority" class="badge priority-high" aria-label="Priority: High">High</span>
-            <span data-testid="test-todo-status" id="todo-status" class="badge status-pending" aria-label="Status: Pending">Pending</span>
-          </div>
+      <div class="card-top">
+        <h2 id="todo-title" data-testid="test-todo-title">Redesign Onboarding Flow</h2>
+        <div class="badges">
+          <span data-testid="test-todo-priority" class="badge priority-high" aria-label="Priority: High">High</span>
+          <span data-testid="test-todo-status" id="todo-status" class="badge status-pending" aria-label="Status: Pending">Pending</span>
         </div>
       </div>
 
@@ -76,29 +58,22 @@
 
       <!-- Due date + time remaining -->
       <div class="meta-row">
-        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true" class="meta-icon">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true" class="meta-icon">
           <rect x="1" y="3" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/>
           <path d="M5 1v3M11 1v3M1 7h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
-        <time data-testid="test-todo-due-date" datetime="2026-04-18T17:00:00Z">
-          Due Apr 18, 2026
-        </time>
-        <span data-testid="test-todo-time-remaining" id="time-remaining" aria-live="polite" class="time-chip time-future">
-          --
-        </span>
+        <time data-testid="test-todo-due-date" datetime="2026-04-18T17:00:00Z">Due Apr 18, 2026</time>
+        <span data-testid="test-todo-time-remaining" id="time-remaining" aria-live="polite" class="time-chip time-future">--</span>
       </div>
 
-      <!-- To-dos section -->
+      <!-- Divider -->
+      <hr class="section-divider" />
+
+      <!-- To-dos -->
       <p class="section-label">To-dos</p>
 
       <label class="todo-row">
-        <input
-          type="checkbox"
-          id="todo-complete"
-          data-testid="test-todo-complete-toggle"
-          aria-label="Mark task as complete"
-          class="task-checkbox"
-        />
+        <input type="checkbox" class="task-checkbox" data-testid="test-todo-complete-toggle" aria-label="Redesign onboarding flow for mobile" />
         <span class="custom-check" aria-hidden="true">
           <svg class="check-icon" width="10" height="10" viewBox="0 0 10 10" fill="none">
             <path d="M1.5 5l2.5 2.5 4.5-4.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -108,11 +83,7 @@
       </label>
 
       <label class="todo-row">
-        <input
-          type="checkbox"
-          aria-label="Write handoff notes"
-          class="task-checkbox"
-        />
+        <input type="checkbox" class="task-checkbox" aria-label="Write handoff notes for dev team" />
         <span class="custom-check" aria-hidden="true">
           <svg class="check-icon" width="10" height="10" viewBox="0 0 10 10" fill="none">
             <path d="M1.5 5l2.5 2.5 4.5-4.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -121,25 +92,27 @@
         <span class="todo-text">Write handoff notes for dev team</span>
       </label>
 
-      <!-- Bottom row: tags left, buttons right -->
+      <!-- Footer -->
       <div class="card-footer">
 
+        <!-- Tags row -->
         <ul data-testid="test-todo-tags" aria-label="Task tags" role="list" class="tags">
           <li data-testid="test-todo-tag-work">work</li>
           <li data-testid="test-todo-tag-urgent">urgent</li>
           <li>design</li>
         </ul>
 
+        <!-- Buttons row -->
         <div class="footer-btns">
-          <button data-testid="test-todo-edit-button" class="icon-btn" aria-label="Edit task" onclick="console.log('edit clicked')">
-            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <button data-testid="test-todo-edit-button" class="btn-edit" aria-label="Edit task" onclick="console.log('edit clicked')">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true">
               <path d="M11.5 1.5l3 3-9 9H2.5v-3l9-9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
               <path d="M9.5 3.5l3 3" stroke="currentColor" stroke-width="1.5"/>
             </svg>
             Edit
           </button>
-          <button data-testid="test-todo-delete-button" class="icon-btn delete-btn" aria-label="Delete task" onclick="alert('Delete clicked')">
-            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <button data-testid="test-todo-delete-button" class="btn-delete" aria-label="Delete task" onclick="alert('Delete clicked')">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true">
               <path d="M2 4h12M6 4V2h4v2M5 4v9a1 1 0 001 1h4a1 1 0 001-1V4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             Delete
