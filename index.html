@@ -20,60 +20,57 @@
     <span id="toggle-label">Dark</span>
   </button>
 
-  <article data-testid="test-todo-card" id="todo-card" aria-labelledby="todo-title">
+  <article id="todo-card" aria-labelledby="todo-title">
 
     <!-- LEFT PANEL -->
     <div class="left-panel">
       <div class="date-block">
-        <span class="day-number">18</span>
-        <span class="day-month">April</span>
-        <span class="day-name">Friday</span>
+        <div class="date-top-row">
+          <span id="live-day-number" class="day-number">11</span>
+          <span id="live-day-month" class="day-month">April</span>
+        </div>
+        <span id="live-day-name" class="day-name">Saturday</span>
       </div>
+      <hr class="left-divider" />
       <div class="todo-count">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
           <rect x="1" y="1" width="14" height="14" rx="3" stroke="currentColor" stroke-width="1.5"/>
           <path d="M4.5 8l2.5 2.5 4.5-4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        <span>2 To-dos</span>
+        <span id="todo-count-label">2 To-dos</span>
       </div>
     </div>
 
     <!-- RIGHT PANEL -->
     <div class="right-panel">
 
-      <!-- Title + badges -->
       <div class="card-top">
-        <h2 id="todo-title" data-testid="test-todo-title">Redesign Onboarding Flow</h2>
+        <h2 id="todo-title">Redesign Onboarding Flow</h2>
         <div class="badges">
-          <span data-testid="test-todo-priority" class="badge priority-high" aria-label="Priority: High">High</span>
-          <span data-testid="test-todo-status" id="todo-status" class="badge status-pending" aria-label="Status: Pending">Pending</span>
+          <span class="badge priority-high" aria-label="Priority: High">High</span>
+          <span class="badge status-pending" id="todo-status" aria-label="Status: Pending">Pending</span>
         </div>
       </div>
 
-      <!-- Description -->
-      <p data-testid="test-todo-description">
+      <p class="desc">
         Review the current onboarding steps, reduce friction, and hand off
         updated Figma screens to the dev team by end of sprint.
       </p>
 
-      <!-- Due date + time remaining -->
       <div class="meta-row">
         <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true" class="meta-icon">
           <rect x="1" y="3" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/>
           <path d="M5 1v3M11 1v3M1 7h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
-        <time data-testid="test-todo-due-date" datetime="2026-04-18T17:00:00Z">Due Apr 18, 2026</time>
-        <span data-testid="test-todo-time-remaining" id="time-remaining" aria-live="polite" class="time-chip time-future">--</span>
+        <time datetime="2026-04-18T17:00:00Z">Due Apr 18, 2026</time>
+        <span id="time-remaining" aria-live="polite" class="time-chip time-future">--</span>
       </div>
 
-      <!-- Divider -->
       <hr class="section-divider" />
-
-      <!-- To-dos -->
       <p class="section-label">To-dos</p>
 
       <label class="todo-row">
-        <input type="checkbox" class="task-checkbox" data-testid="test-todo-complete-toggle" aria-label="Redesign onboarding flow for mobile" />
+        <input type="checkbox" class="task-checkbox" aria-label="Redesign onboarding flow for mobile" />
         <span class="custom-check" aria-hidden="true">
           <svg class="check-icon" width="10" height="10" viewBox="0 0 10 10" fill="none">
             <path d="M1.5 5l2.5 2.5 4.5-4.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -92,19 +89,17 @@
         <span class="todo-text">Write handoff notes for dev team</span>
       </label>
 
-      <!-- Footer -->
       <div class="card-footer">
-
-        <!-- Tags row -->
-        <ul data-testid="test-todo-tags" aria-label="Task tags" role="list" class="tags">
-          <li data-testid="test-todo-tag-work">work</li>
-          <li data-testid="test-todo-tag-urgent">urgent</li>
+        <ul aria-label="Task tags" role="list" class="tags">
+          <li>work</li>
+          <li>urgent</li>
           <li>design</li>
         </ul>
 
+        
         <!-- Buttons row -->
         <div class="footer-btns">
-          <button data-testid="test-todo-edit-button" class="btn-edit" aria-label="Edit task" onclick="console.log('edit clicked')">
+          <button data-testid="test-todo-edit-button" class="btn-edit" aria-label="Edit task" onclick="alert('edit clicked')">
             <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true">
               <path d="M11.5 1.5l3 3-9 9H2.5v-3l9-9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
               <path d="M9.5 3.5l3 3" stroke="currentColor" stroke-width="1.5"/>
@@ -123,7 +118,7 @@
 
     </div>
   </article>
-
+  
   <script src="app.js"></script>
 </body>
 </html>
