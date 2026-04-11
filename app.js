@@ -1,5 +1,4 @@
-// ── Time remaining ─────────────────────────────────────
-
+// Time remaining
 var DUE_DATE = new Date('2026-04-18T17:00:00Z');
 
 function getTimeText() {
@@ -25,26 +24,23 @@ function getTimeText() {
 }
 
 function updateTimeChip() {
-  var chip   = document.getElementById('time-remaining');
-  var result = getTimeText();
-  chip.textContent = result.text;
-  chip.className   = 'time-chip ' + result.cls;
+  var chip = document.getElementById('time-remaining');
+  var r    = getTimeText();
+  chip.textContent = r.text;
+  chip.className   = 'time-chip ' + r.cls;
 }
 
 updateTimeChip();
 setInterval(updateTimeChip, 60000);
 
 
-// ── Checkbox / status logic ────────────────────────────
-
+// Status updates based on checkboxes
 var checkboxes = document.querySelectorAll('.task-checkbox');
 var card       = document.getElementById('todo-card');
 var status     = document.getElementById('todo-status');
 
 function updateStatus() {
-  var total   = checkboxes.length;
   var checked = 0;
-
   checkboxes.forEach(function(cb) {
     if (cb.checked) checked++;
   });
@@ -54,7 +50,7 @@ function updateStatus() {
     status.className   = 'badge status-pending';
     status.setAttribute('aria-label', 'Status: Pending');
     card.classList.remove('completed');
-  } else if (checked < total) {
+  } else if (checked < checkboxes.length) {
     status.textContent = 'In Progress';
     status.className   = 'badge status-progress';
     status.setAttribute('aria-label', 'Status: In Progress');
@@ -72,8 +68,7 @@ checkboxes.forEach(function(cb) {
 });
 
 
-// ── Dark / Light toggle ────────────────────────────────
-
+// Dark / light toggle
 var toggleBtn   = document.getElementById('theme-toggle');
 var iconMoon    = document.getElementById('icon-moon');
 var iconSun     = document.getElementById('icon-sun');
@@ -97,8 +92,7 @@ var saved = localStorage.getItem('theme') || 'light';
 applyTheme(saved);
 
 toggleBtn.addEventListener('click', function() {
-  var current = html.getAttribute('data-theme');
-  var next    = current === 'dark' ? 'light' : 'dark';
+  var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
   applyTheme(next);
   localStorage.setItem('theme', next);
 });
