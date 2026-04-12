@@ -1,4 +1,4 @@
-// ── Real-time date ─────────────────────────────────────────────────────────
+// Real-time date
 var MONTHS = ['January','February','March','April','May','June',
               'July','August','September','October','November','December'];
 var DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -11,13 +11,18 @@ function setLiveDate() {
 }
 
 setLiveDate();
+
 (function scheduleMidnight() {
-  var n   = new Date();
-  var ms  = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1) - n;
-  setTimeout(function() { setLiveDate(); setInterval(setLiveDate, 86400000); }, ms);
+  var n  = new Date();
+  var ms = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1) - n;
+  setTimeout(function() {
+    setLiveDate();
+    setInterval(setLiveDate, 86400000);
+  }, ms);
 })();
 
-// ── Time chip ──────────────────────────────────────────────────────────────
+
+// Time chip
 var DUE_DATE = new Date('2026-04-18T17:00:00Z');
 
 function getTimeText() {
@@ -26,7 +31,9 @@ function getTimeText() {
   var mins  = Math.floor(abs / 60000);
   var hours = Math.floor(abs / 3600000);
   var days  = Math.floor(abs / 86400000);
+
   if (abs < 60000) return { text: 'Due now!', cls: 'time-now' };
+
   if (diff > 0) {
     if (days >= 2)  return { text: 'Due in ' + days + ' days', cls: 'time-future' };
     if (days === 1) return { text: 'Due tomorrow',              cls: 'time-future' };
@@ -50,7 +57,8 @@ function updateTimeChip() {
 updateTimeChip();
 setInterval(updateTimeChip, 60000);
 
-// ── Status + count ─────────────────────────────────────────────────────────
+
+// Status + todo count
 var checkboxes     = document.querySelectorAll('.task-checkbox');
 var card           = document.getElementById('todo-card');
 var statusBadge    = document.getElementById('todo-status');
@@ -85,7 +93,8 @@ function updateStatus() {
 updateStatus();
 checkboxes.forEach(function(cb) { cb.addEventListener('change', updateStatus); });
 
-// ── Alert banner ───────────────────────────────────────────────────────────
+
+// Alert banner
 var banner     = document.getElementById('alert-banner');
 var alertMsg   = document.getElementById('alert-msg');
 var alertClose = document.getElementById('alert-close');
@@ -103,19 +112,19 @@ alertClose.addEventListener('click', function() {
   banner.classList.remove('visible');
 });
 
-// ── Edit button ────────────────────────────────────────────────────────────
+
+// Edit button
 document.getElementById('btn-edit').addEventListener('click', function() {
-  alert('edit clicked');
   showAlert('Edit action triggered.', 'edit');
 });
 
-// ── Delete button ──────────────────────────────────────────────────────────
+// Delete button
 document.getElementById('btn-delete').addEventListener('click', function() {
-  alert('Delete clicked');
   showAlert('Delete action triggered.', 'delete');
 });
 
-// ── Dark / light toggle ────────────────────────────────────────────────────
+
+// Dark / light toggle
 var toggleBtn   = document.getElementById('theme-toggle');
 var iconMoon    = document.getElementById('icon-moon');
 var iconSun     = document.getElementById('icon-sun');
