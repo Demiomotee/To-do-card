@@ -4,8 +4,8 @@ A responsive, accessible Todo Card built with semantic HTML, CSS, and vanilla Ja
 
 ## Links
 
-- **Live Demo:** https://demiomotee.github.io/Vibes/
-- **Repo:** https://github.com/Demiomotee/Vibes.git
+- **Live Demo:** https://demiomotee.github.io/To-do-card/
+- **Repo:** https://github.com/Demiomotee/To-do-card.git
 
 ---
 
@@ -13,8 +13,8 @@ A responsive, accessible Todo Card built with semantic HTML, CSS, and vanilla Ja
 
 1. Clone the repo:
 ```bash
-   git clone https://github.com/Demiomotee/Vibes.git
-   cd Vibes
+   git clone https://github.com/Demiomotee/To-do-card.git
+   cd to-do card
 ```
 
 2. Open `index.html` in your browser or use VS Code Live Server.
