@@ -4,9 +4,6 @@
   padding: 0;
 }
 
-/* ── SF Pro font stack ────────────────────── */
-/* Uses SF Pro on Apple devices automatically,
-   falls back to similar system fonts elsewhere */
 
 :root {
   --font: -apple-system, BlinkMacSystemFont, "SF Pro Text",
