@@ -1,10 +1,9 @@
-// Real-time date
-var MONTHS = ['January','February','March','April','May','June',
-              'July','August','September','October','November','December'];
-var DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const MONTHS = ['January','February','March','April','May','June',
+                'July','August','September','October','November','December'];
+const DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
 function setLiveDate() {
-  var n = new Date();
+  const n = new Date();
   document.getElementById('live-day-number').textContent = n.getDate();
   document.getElementById('live-day-month').textContent  = MONTHS[n.getMonth()];
   document.getElementById('live-day-name').textContent   = DAYS[n.getDay()];
@@ -13,8 +12,8 @@ function setLiveDate() {
 setLiveDate();
 
 (function scheduleMidnight() {
-  var n  = new Date();
-  var ms = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1) - n;
+  const n  = new Date();
+  const ms = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1) - n;
   setTimeout(function() {
     setLiveDate();
     setInterval(setLiveDate, 86400000);
@@ -22,15 +21,14 @@ setLiveDate();
 })();
 
 
-// Time chip
-var DUE_DATE = new Date('2026-04-18T17:00:00Z');
+const DUE_DATE = new Date('2026-04-18T17:00:00Z');
 
 function getTimeText() {
-  var diff  = DUE_DATE - Date.now();
-  var abs   = Math.abs(diff);
-  var mins  = Math.floor(abs / 60000);
-  var hours = Math.floor(abs / 3600000);
-  var days  = Math.floor(abs / 86400000);
+  const diff  = DUE_DATE - Date.now();
+  const abs   = Math.abs(diff);
+  const mins  = Math.floor(abs / 60000);
+  const hours = Math.floor(abs / 3600000);
+  const days  = Math.floor(abs / 86400000);
 
   if (abs < 60000) return { text: 'Due now!', cls: 'time-now' };
 
@@ -48,8 +46,8 @@ function getTimeText() {
 }
 
 function updateTimeChip() {
-  var chip = document.getElementById('time-remaining');
-  var r    = getTimeText();
+  const chip = document.getElementById('time-remaining');
+  const r    = getTimeText();
   chip.textContent = r.text;
   chip.className   = 'time-chip ' + r.cls;
 }
@@ -58,18 +56,17 @@ updateTimeChip();
 setInterval(updateTimeChip, 60000);
 
 
-// Status + todo count
-var checkboxes     = document.querySelectorAll('.task-checkbox');
-var card           = document.getElementById('todo-card');
-var statusBadge    = document.getElementById('todo-status');
-var todoCountLabel = document.getElementById('todo-count-label');
+const checkboxes     = document.querySelectorAll('.task-checkbox');
+const card           = document.getElementById('todo-card');
+const statusBadge    = document.getElementById('todo-status');
+const todoCountLabel = document.getElementById('todo-count-label');
 
 function updateStatus() {
-  var total   = checkboxes.length;
-  var checked = 0;
+  const total = checkboxes.length;
+  let checked = 0;
   checkboxes.forEach(function(cb) { if (cb.checked) checked++; });
 
-  var remaining = total - checked;
+  const remaining = total - checked;
   todoCountLabel.textContent = remaining + ' To-do' + (remaining !== 1 ? 's' : '');
 
   if (checked === 0) {
@@ -94,11 +91,10 @@ updateStatus();
 checkboxes.forEach(function(cb) { cb.addEventListener('change', updateStatus); });
 
 
-// Alert banner
-var banner     = document.getElementById('alert-banner');
-var alertMsg   = document.getElementById('alert-msg');
-var alertClose = document.getElementById('alert-close');
-var hideTimer  = null;
+const banner     = document.getElementById('alert-banner');
+const alertMsg   = document.getElementById('alert-msg');
+const alertClose = document.getElementById('alert-close');
+let hideTimer    = null;
 
 function showAlert(msg, type) {
   clearTimeout(hideTimer);
@@ -113,23 +109,23 @@ alertClose.addEventListener('click', function() {
 });
 
 
-// Edit button
 document.getElementById('btn-edit').addEventListener('click', function() {
+  console.log('edit clicked');
   showAlert('Edit action triggered.', 'edit');
 });
 
-// Delete button
+
 document.getElementById('btn-delete').addEventListener('click', function() {
+  alert('Delete clicked');
   showAlert('Delete action triggered.', 'delete');
 });
 
 
-// Dark / light toggle
-var toggleBtn   = document.getElementById('theme-toggle');
-var iconMoon    = document.getElementById('icon-moon');
-var iconSun     = document.getElementById('icon-sun');
-var toggleLabel = document.getElementById('toggle-label');
-var html        = document.documentElement;
+const toggleBtn   = document.getElementById('theme-toggle');
+const iconMoon    = document.getElementById('icon-moon');
+const iconSun     = document.getElementById('icon-sun');
+const toggleLabel = document.getElementById('toggle-label');
+const html        = document.documentElement;
 
 function applyTheme(theme) {
   html.setAttribute('data-theme', theme);
@@ -144,11 +140,11 @@ function applyTheme(theme) {
   }
 }
 
-var saved = localStorage.getItem('theme') || 'light';
+const saved = localStorage.getItem('theme') || 'light';
 applyTheme(saved);
 
 toggleBtn.addEventListener('click', function() {
-  var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
   applyTheme(next);
   localStorage.setItem('theme', next);
 });
