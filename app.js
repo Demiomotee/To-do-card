@@ -110,7 +110,7 @@ alertClose.addEventListener('click', function() {
 
 
 document.getElementById('btn-edit').addEventListener('click', function() {
-  console.log('edit clicked');
+  alert('edit clicked');
   showAlert('Edit action triggered.', 'edit');
 });
 
