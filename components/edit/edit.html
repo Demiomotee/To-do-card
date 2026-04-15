@@ -1,0 +1,24 @@
+<form data-testid="test-todo-edit-form" class="edit-form">
+
+  <label for="edit-title">Title</label>
+  <input id="edit-title" data-testid="test-todo-edit-title-input" type="text" />
+
+  <label for="edit-desc">Description</label>
+  <textarea id="edit-desc" data-testid="test-todo-edit-description-input"></textarea>
+
+  <label for="edit-priority">Priority</label>
+  <select id="edit-priority" data-testid="test-todo-edit-priority-select">
+    <option value="Low">Low</option>
+    <option value="Medium">Medium</option>
+    <option value="High">High</option>
+  </select>
+
+  <label for="edit-due">Due Date</label>
+  <input id="edit-due" data-testid="test-todo-edit-due-date-input" type="datetime-local" />
+
+  <div class="edit-actions">
+    <button type="button" data-testid="test-todo-save-button">Save</button>
+    <button type="button" data-testid="test-todo-cancel-button">Cancel</button>
+  </div>
+
+</form>
