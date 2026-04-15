@@ -111,9 +111,11 @@ alertClose.addEventListener('click', function() {
 });
 
 
-document.getElementById('btn-edit').addEventListener('click', function() {
-  alert('edit clicked');
-  showAlert('Edit action triggered.', 'edit');
+document.getElementById('btn-edit').addEventListener('click', () => {
+  openEdit({
+    title: document.getElementById('todo-title').textContent,
+    desc: document.querySelector('.desc').textContent
+  });
 });
 
 
