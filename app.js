@@ -138,31 +138,22 @@ document.getElementById('btn-edit').addEventListener('click', () => {
       modal.classList.add('hidden'); // close modal
     }
   );
-});document.getElementById('btn-edit').addEventListener('click', () => {
-  const modal = document.getElementById('edit-modal');
-  const modalContent = document.getElementById('modal-content');
+});
 
-  modal.classList.remove('hidden'); // show popup
-
+document.getElementById('btn-edit').addEventListener('click', () => {
   mountEdit(
-    modalContent,
+    document.body,
     {
       title: document.getElementById('todo-title').textContent,
       description: document.querySelector('.desc').textContent,
       priority: document.querySelector('[data-testid="test-todo-priority"]').textContent,
-      due: document.querySelector('[data-testid="test-todo-due-date"]').getAttribute('datetime')
+      due: document.querySelector('[data-testid="test-todo-due-date"]').getAttribute('datetime'),
+      status: document.getElementById('todo-status').textContent
     },
     (updated) => {
       console.log(updated);
-
-      document.getElementById('todo-title').textContent = updated.title;
-      document.querySelector('.desc').textContent = updated.description;
-
-      modal.classList.add('hidden'); // close modal
     },
-    () => {
-      modal.classList.add('hidden'); // close modal
-    }
+    () => {}
   );
 });
 
