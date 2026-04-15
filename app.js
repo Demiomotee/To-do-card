@@ -112,8 +112,13 @@ alertClose.addEventListener('click', function() {
 
 
 document.getElementById('btn-edit').addEventListener('click', () => {
+  const modal = document.getElementById('edit-modal');
+  const modalContent = document.getElementById('modal-content');
+
+  modal.classList.remove('hidden'); // show popup
+
   mountEdit(
-    document.getElementById('edit-container'),
+    modalContent,
     {
       title: document.getElementById('todo-title').textContent,
       description: document.querySelector('.desc').textContent,
@@ -122,13 +127,44 @@ document.getElementById('btn-edit').addEventListener('click', () => {
     },
     (updated) => {
       console.log(updated);
+
+      // 👉 update UI
+      document.getElementById('todo-title').textContent = updated.title;
+      document.querySelector('.desc').textContent = updated.description;
+
+      modal.classList.add('hidden'); // close modal
     },
     () => {
-      console.log("cancelled");
+      modal.classList.add('hidden'); // close modal
+    }
+  );
+});document.getElementById('btn-edit').addEventListener('click', () => {
+  const modal = document.getElementById('edit-modal');
+  const modalContent = document.getElementById('modal-content');
+
+  modal.classList.remove('hidden'); // show popup
+
+  mountEdit(
+    modalContent,
+    {
+      title: document.getElementById('todo-title').textContent,
+      description: document.querySelector('.desc').textContent,
+      priority: document.querySelector('[data-testid="test-todo-priority"]').textContent,
+      due: document.querySelector('[data-testid="test-todo-due-date"]').getAttribute('datetime')
+    },
+    (updated) => {
+      console.log(updated);
+
+      document.getElementById('todo-title').textContent = updated.title;
+      document.querySelector('.desc').textContent = updated.description;
+
+      modal.classList.add('hidden'); // close modal
+    },
+    () => {
+      modal.classList.add('hidden'); // close modal
     }
   );
 });
-
 
 document.getElementById('btn-delete').addEventListener('click', function() {
   alert('Delete clicked');
