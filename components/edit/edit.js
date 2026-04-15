@@ -4,32 +4,75 @@ export function mountEdit(container, data, onSave, onCancel) {
     .then(html => {
       container.innerHTML = html;
 
-      const form = container.querySelector('[data-testid="test-todo-edit-form"]');
+      const modal = document.getElementById('edit-modal');
+      const form = modal.querySelector('[data-testid="test-todo-edit-form"]');
 
-      const titleInput = form.querySelector('#edit-title');
-      const descInput = form.querySelector('#edit-desc');
-      const priorityInput = form.querySelector('#edit-priority');
-      const dueInput = form.querySelector('#edit-due');
+      const title = form.querySelector('#edit-title');
+      const desc = form.querySelector('#edit-desc');
+      const priority = form.querySelector('#edit-priority');
+      const due = form.querySelector('#edit-due');
+      const status = form.querySelector('#edit-status');
 
-      // 👉 PREFILL DATA (THIS IS WHAT YOU ASKED FOR)
-      titleInput.value = data.title;
-      descInput.value = data.description;
-      priorityInput.value = data.priority;
-      dueInput.value = data.due;
+      const taskList = form.querySelector('#task-list');
+      const addTaskBtn = form.querySelector('#add-task');
+
+      // PREFILL
+      title.value = data.title;
+      desc.value = data.description;
+      priority.value = data.priority;
+      due.value = data.due;
+      status.value = data.status || "Pending";
+
+      updatePriorityStyle(priority);
+
+      // PRIORITY STYLE CHANGE
+      priority.addEventListener('change', () => {
+        updatePriorityStyle(priority);
+      });
+
+      function updatePriorityStyle(el) {
+        el.classList.remove('high','medium','low');
+        if (el.value === 'High') el.classList.add('high');
+        if (el.value === 'Medium') el.classList.add('medium');
+        if (el.value === 'Low') el.classList.add('low');
+      }
+
+      // ADD TASK
+      addTaskBtn.onclick = () => {
+        const div = document.createElement('div');
+        div.className = 'task-item';
+        div.innerHTML = `<input type="text" placeholder="New task..." />`;
+        taskList.appendChild(div);
+      };
+
+      // CLOSE
+      document.getElementById('modal-close').onclick = close;
+      modal.onclick = (e) => {
+        if (e.target === modal) close();
+      };
+
+      function close() {
+        container.innerHTML = '';
+        onCancel();
+      }
 
       // SAVE
       form.querySelector('[data-testid="test-todo-save-button"]').onclick = () => {
+        const tasks = [...taskList.querySelectorAll('input')].map(i => i.value);
+
         onSave({
-          title: titleInput.value,
-          description: descInput.value,
-          priority: priorityInput.value,
-          due: dueInput.value
+          title: title.value,
+          description: desc.value,
+          priority: priority.value,
+          due: due.value,
+          status: status.value,
+          tasks
         });
+
+        container.innerHTML = '';
       };
 
       // CANCEL
-      form.querySelector('[data-testid="test-todo-cancel-button"]').onclick = () => {
-        onCancel();
-      };
+      form.querySelector('[data-testid="test-todo-cancel-button"]').onclick = close;
     });
 }
