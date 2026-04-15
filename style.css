@@ -567,6 +567,30 @@ body {
   font-size: 1rem;
 }
 
+/* FULL WIDTH CLEAN DROPDOWN */
+.select-clean {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card-bg);
+  font-family: var(--font);
+  font-size: 0.9rem;
+  color: var(--text-h);
+}
+
+/* DESCRIPTION FIX */
+#edit-desc {
+  min-height: 90px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+/* REMOVE EXTRA SPACING LOOK */
+.edit-form textarea {
+  margin: 0;
+}
+
 /* FORM */
 .edit-form {
   display: flex;
@@ -640,11 +664,17 @@ body {
   cursor: pointer;
 }
 
-/* DATE */
-.date-wrap input {
-  width: 100%;
+.date-wrap {
+  position: relative;
 }
 
+.date-wrap input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+}
 /* BUTTONS */
 .btn-edit.primary {
   background: #111;
