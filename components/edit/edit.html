@@ -1,24 +1,89 @@
-<form data-testid="test-todo-edit-form" class="edit-form">
+<div class="modal-overlay" id="edit-modal">
 
-  <label for="edit-title">Title</label>
-  <input id="edit-title" data-testid="test-todo-edit-title-input" type="text" />
+  <div class="modal-card" role="dialog" aria-modal="true">
+    
+    <!-- HEADER -->
+    <div class="modal-header">
+      <h2>Edit Task</h2>
+      <button class="modal-close" id="modal-close">✕</button>
+    </div>
 
-  <label for="edit-desc">Description</label>
-  <textarea id="edit-desc" data-testid="test-todo-edit-description-input"></textarea>
+    <!-- FORM -->
+    <form data-testid="test-todo-edit-form" class="edit-form">
 
-  <label for="edit-priority">Priority</label>
-  <select id="edit-priority" data-testid="test-todo-edit-priority-select">
-    <option value="Low">Low</option>
-    <option value="Medium">Medium</option>
-    <option value="High">High</option>
-  </select>
+      <!-- TITLE -->
+      <label for="edit-title">Title</label>
+      <input id="edit-title"
+             data-testid="test-todo-edit-title-input"
+             type="text" />
 
-  <label for="edit-due">Due Date</label>
-  <input id="edit-due" data-testid="test-todo-edit-due-date-input" type="datetime-local" />
+      <!-- DESCRIPTION -->
+      <label for="edit-desc">Description</label>
+      <textarea id="edit-desc"
+        data-testid="test-todo-edit-description-input"></textarea>
 
-  <div class="edit-actions">
-    <button type="button" data-testid="test-todo-save-button">Save</button>
-    <button type="button" data-testid="test-todo-cancel-button">Cancel</button>
+      <!-- TASKS -->
+      <div class="tasks-section">
+        <p class="section-label">Tasks</p>
+        <div id="task-list"></div>
+
+        <button type="button" id="add-task" class="btn-add-task">
+          + Add task
+        </button>
+      </div>
+
+      <!-- ROW -->
+      <div class="edit-row">
+
+        <!-- PRIORITY -->
+        <div class="field">
+          <label for="edit-priority">Priority</label>
+          <select id="edit-priority"
+            data-testid="test-todo-edit-priority-select"
+            class="select-pill">
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+          </select>
+        </div>
+
+        <!-- STATUS -->
+        <div class="field">
+          <label>Status</label>
+          <select data-testid="test-todo-status-control"
+            id="edit-status"
+            class="select-pill">
+            <option>Pending</option>
+            <option>In Progress</option>
+            <option>Done</option>
+          </select>
+        </div>
+
+      </div>
+
+      <!-- DATE -->
+      <label for="edit-due">Due Date</label>
+      <div class="date-wrap">
+        <input id="edit-due"
+          data-testid="test-todo-edit-due-date-input"
+          type="datetime-local" />
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="edit-actions">
+        <button type="button"
+          data-testid="test-todo-cancel-button"
+          class="btn-edit ghost">
+          Cancel
+        </button>
+
+        <button type="button"
+          data-testid="test-todo-save-button"
+          class="btn-edit primary">
+          Save
+        </button>
+      </div>
+
+    </form>
   </div>
-
-</form>
+</div>
