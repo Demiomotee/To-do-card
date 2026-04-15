@@ -526,6 +526,136 @@ body {
   max-width: 400px;
 }
 
+/* MODAL */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 520px;
+  background: var(--card-bg);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  animation: pop 0.2s ease;
+}
+
+@keyframes pop {
+  from { transform: scale(0.96); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+/* FORM */
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.edit-form input,
+.edit-form textarea,
+.select-pill {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text-h);
+  font-family: var(--font);
+}
+
+/* ROW */
+.edit-row {
+  display: flex;
+  gap: 10px;
+}
+
+.field {
+  flex: 1;
+}
+
+/* CUSTOM SELECT */
+.select-pill {
+  appearance: none;
+  cursor: pointer;
+}
+
+/* DYNAMIC COLORS */
+.select-pill.high {
+  background: rgba(185,28,28,0.1);
+  color: #b91c1c;
+}
+
+.select-pill.medium {
+  background: rgba(180,83,9,0.1);
+  color: #b45309;
+}
+
+.select-pill.low {
+  background: rgba(21,128,61,0.1);
+  color: #15803d;
+}
+
+/* TASKS */
+.tasks-section {
+  margin-top: 8px;
+}
+
+.task-item {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.task-item input {
+  flex: 1;
+}
+
+/* ADD BUTTON */
+.btn-add-task {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+/* DATE */
+.date-wrap input {
+  width: 100%;
+}
+
+/* BUTTONS */
+.btn-edit.primary {
+  background: #111;
+  color: white;
+}
+
+.btn-edit.ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+}
+
 .hidden {
   display: none;
 }
