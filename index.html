@@ -6,6 +6,11 @@
   <title>Todo Card</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+  
+<div id="edit-modal" class="modal hidden">
+  <div class="modal-content" id="modal-content"></div>
+</div>
+  
 <body>
 
   <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
@@ -52,8 +57,6 @@
         Review the current onboarding steps, reduce friction, and hand off
         updated Figma screens to the dev team by end of sprint.
       </p>
-      
-      <div id="edit-container"></div>
 
       <div class="meta-row">
         <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true" class="meta-icon">
