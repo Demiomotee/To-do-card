@@ -1,4 +1,4 @@
-import { openEdit } from './components/edit/edit.js';
+import { mountEdit } from './components/edit/edit.js';
 
 const MONTHS = ['January','February','March','April','May','June',
                 'July','August','September','October','November','December'];
@@ -112,10 +112,21 @@ alertClose.addEventListener('click', function() {
 
 
 document.getElementById('btn-edit').addEventListener('click', () => {
-  openEdit({
-    title: document.getElementById('todo-title').textContent,
-    desc: document.querySelector('.desc').textContent
-  });
+  mountEdit(
+    document.getElementById('edit-container'),
+    {
+      title: document.getElementById('todo-title').textContent,
+      description: document.querySelector('.desc').textContent,
+      priority: document.querySelector('[data-testid="test-todo-priority"]').textContent,
+      due: document.querySelector('[data-testid="test-todo-due-date"]').getAttribute('datetime')
+    },
+    (updated) => {
+      console.log(updated);
+    },
+    () => {
+      console.log("cancelled");
+    }
+  );
 });
 
 
