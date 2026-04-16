@@ -1,5 +1,4 @@
 export function mountEdit(data, onSave, onCancel) {
-
   Promise.all([
     fetch('./components/edit/edit.html').then(r => r.text()),
     loadCSS('./components/edit/edit.css')
