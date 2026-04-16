@@ -23,7 +23,7 @@ setLiveDate();
 })();
 
 
-const DUE_DATE = new Date('2026-04-18T17:00:00Z');
+let DUE_DATE = new Date('2026-04-18T17:00:00Z');
 
 function getTimeText() {
   const diff  = DUE_DATE - Date.now();
@@ -57,7 +57,6 @@ function updateTimeChip() {
 updateTimeChip();
 setInterval(updateTimeChip, 60000);
 
-
 const checkboxes     = document.querySelectorAll('.task-checkbox');
 const card           = document.getElementById('todo-card');
 const statusBadge    = document.getElementById('todo-status');
@@ -90,7 +89,30 @@ function updateStatus() {
 }
 
 updateStatus();
-checkboxes.forEach(function(cb) { cb.addEventListener('change', updateStatus); });
+checkboxes.forEach(cb => cb.addEventListener('change', updateStatus));
+
+
+const descEl      = document.getElementById('todo-desc');
+const seeMoreBtn  = document.getElementById('see-more-btn');
+
+function checkDescOverflow() {
+  // Check if text is being clamped
+  if (descEl.scrollHeight > descEl.clientHeight + 2) {
+    seeMoreBtn.classList.add('visible');
+  } else {
+    seeMoreBtn.classList.remove('visible');
+  }
+}
+
+window.addEventListener('load', checkDescOverflow);
+
+seeMoreBtn.addEventListener('click', function() {
+  const isExpanded = descEl.classList.contains('expanded');
+  descEl.classList.toggle('expanded', !isExpanded);
+  seeMoreBtn.textContent     = isExpanded ? 'See more' : 'See less';
+  seeMoreBtn.setAttribute('aria-expanded', !isExpanded);
+});
+
 
 
 const banner     = document.getElementById('alert-banner');
@@ -102,7 +124,7 @@ function showAlert(msg, type) {
   clearTimeout(hideTimer);
   banner.className     = 'alert-banner alert-' + type + ' visible';
   alertMsg.textContent = msg;
-  hideTimer = setTimeout(function() { banner.classList.remove('visible'); }, 3500);
+  hideTimer = setTimeout(() => banner.classList.remove('visible'), 3500);
 }
 
 alertClose.addEventListener('click', function() {
@@ -111,56 +133,55 @@ alertClose.addEventListener('click', function() {
 });
 
 
-document.getElementById('btn-edit').addEventListener('click', () => {
-  const modal = document.getElementById('edit-modal');
-  const modalContent = document.getElementById('modal-content');
 
-  modal.classList.remove('hidden'); // show popup
+document.getElementById('btn-edit').addEventListener('click', () => {
+
+  const currentData = {
+    title:       document.getElementById('todo-title').textContent.trim(),
+    description: document.getElementById('todo-desc').textContent.trim(),
+    priority:    document.getElementById('priority-badge').textContent.trim(),
+    due:         document.getElementById('due-date-display').getAttribute('datetime')
+  };
 
   mountEdit(
-    modalContent,
-    {
-      title: document.getElementById('todo-title').textContent,
-      description: document.querySelector('.desc').textContent,
-      priority: document.querySelector('[data-testid="test-todo-priority"]').textContent,
-      due: document.querySelector('[data-testid="test-todo-due-date"]').getAttribute('datetime')
-    },
-    (updated) => {
-      console.log(updated);
+    currentData,
 
-      // 👉 update UI
+    (updated) => {
       document.getElementById('todo-title').textContent = updated.title;
-      document.querySelector('.desc').textContent = updated.description;
+      document.getElementById('todo-desc').textContent  = updated.description;
 
-      modal.classList.add('hidden'); // close modal
-    },
-    () => {
-      modal.classList.add('hidden'); // close modal
-    }
-  );
-});
+  
+      const pb  = document.getElementById('priority-badge');
+      const cls = { High: 'priority-high', Medium: 'priority-medium', Low: 'priority-low' };
+      pb.textContent = updated.priority;
+      pb.className   = 'badge ' + (cls[updated.priority] || 'priority-high');
+      pb.setAttribute('aria-label', 'Priority: ' + updated.priority);
 
-document.getElementById('btn-edit').addEventListener('click', () => {
-  mountEdit(
-    document.body,
-    {
-      title: document.getElementById('todo-title').textContent,
-      description: document.querySelector('.desc').textContent,
-      priority: document.querySelector('[data-testid="test-todo-priority"]').textContent,
-      due: document.querySelector('[data-testid="test-todo-due-date"]').getAttribute('datetime'),
-      status: document.getElementById('todo-status').textContent
-    },
-    (updated) => {
-      console.log(updated);
+      if (updated.due) {
+        const d      = new Date(updated.due);
+        const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        const label  = 'Due ' + months[d.getUTCMonth()] + ' ' + d.getUTCDate() + ', ' + d.getUTCFullYear();
+        document.getElementById('due-date-display').textContent = label;
+        document.getElementById('due-date-display').setAttribute('datetime', updated.due);
+        DUE_DATE = new Date(updated.due);
+        updateTimeChip();
+      }
+
+      descEl.classList.remove('expanded');
+      seeMoreBtn.textContent = 'See more';
+      setTimeout(checkDescOverflow, 50);
+
+      showAlert('Changes saved.', 'save');
     },
     () => {}
   );
 });
 
+
 document.getElementById('btn-delete').addEventListener('click', function() {
-  alert('Delete clicked');
   showAlert('Delete action triggered.', 'delete');
 });
+
 
 
 const toggleBtn   = document.getElementById('theme-toggle');
