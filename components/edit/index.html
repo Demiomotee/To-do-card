@@ -1,80 +1,69 @@
-<div class="modal-overlay" id="edit-modal">
-  <div class="modal-card" role="dialog" aria-modal="true">
+<div class="modal-overlay" id="edit-modal" role="dialog" aria-modal="true" aria-labelledby="modal-heading">
 
-    <!-- HEADER -->
+  <div class="modal-card">
+
     <div class="modal-header">
-      <h2>Edit Task</h2>
-      <button class="modal-close" id="modal-close">✕</button>
+      <h2 id="modal-heading">Edit Task</h2>
+      <button class="modal-close-btn" id="modal-close" aria-label="Close edit modal">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </button>
     </div>
-    <!-- FORM -->
-    <form data-testid="test-todo-edit-form" class="edit-form">
-      <!-- TITLE -->
-      <label for="edit-title">Title</label>
-      <input id="edit-title"
-             data-testid="test-todo-edit-title-input"
-             type="text" />
-      <!-- DESCRIPTION -->
-      <label for="edit-desc">Description</label>
-      <textarea id="edit-desc"
-        data-testid="test-todo-edit-description-input"></textarea>
-      <!-- TASKS -->
-      <div class="tasks-section">
-        <p class="section-label">Tasks</p>
-        <div id="task-list"></div>
-        <button type="button" id="add-task" class="btn-add-task">
-          + Add task
-        </button>
+
+    <form data-testid="test-todo-edit-form" class="modal-form" id="edit-form" novalidate>
+
+      <div class="form-group">
+        <label for="edit-title">Title</label>
+        <input
+          data-testid="test-todo-edit-title-input"
+          id="edit-title"
+          type="text"
+          placeholder="Task title"
+        />
       </div>
-      <!-- ROW -->
-      <div class="edit-row">
-        <div class="field full">
+
+      <div class="form-group">
+        <label for="edit-desc">Description</label>
+        <textarea
+          data-testid="test-todo-edit-description-input"
+          id="edit-desc"
+          placeholder="What needs to be done?"
+          rows="3"
+        ></textarea>
+      </div>
+
+      <div class="form-row">
+
+        <div class="form-group">
           <label for="edit-priority">Priority</label>
-
-          <select id="edit-priority"
-            data-testid="test-todo-edit-priority-select"
-            class="select-clean full-width">
-
-            <option value="Low">Low Priority</option>
-            <option value="Medium">Medium Priority</option>
-            <option value="High">High Priority</option>
-
+          <select data-testid="test-todo-edit-priority-select" id="edit-priority">
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
           </select>
         </div>
 
-        <!-- STATUS -->
-        <!--
-        <div class="field">
-          <label>Status</label>
-          <select data-testid="test-todo-status-control"
-            id="edit-status"
-            class="select-pill">
-            <option>Pending</option>
-            <option>In Progress</option>
-            <option>Done</option>
-          </select>
-        </div> 
-        -->
+        <div class="form-group">
+          <label for="edit-due">Due Date</label>
+          <input
+            data-testid="test-todo-edit-due-date-input"
+            id="edit-due"
+            type="date"
+          />
+        </div>
+
       </div>
-      <!-- DATE -->
-      <label for="edit-due">Due Date</label>
-      <div class="date-wrap">
-        <input id="edit-due"
-          data-testid="test-todo-edit-due-date-input"
-          type="datetime-local" />
-      </div>
-      <!-- ACTIONS -->
-      <div class="edit-actions">
-        <button type="button"
-          data-testid="test-todo-cancel-button"
-          class="btn-edit ghost">
+
+      <div class="modal-actions">
+        <button type="button" data-testid="test-todo-cancel-button" id="btn-cancel" class="modal-btn-cancel">
           Cancel
         </button>
-        <button type="button"
-          data-testid="test-todo-save-button"
-          class="btn-edit primary">
-          Save
+        <button type="button" data-testid="test-todo-save-button" id="btn-save" class="modal-btn-save">
+          Save changes
         </button>
       </div>
+
     </form>
   </div>
 </div>
