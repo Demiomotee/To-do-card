@@ -1,49 +1,76 @@
-export function mountEdit(container, data, onSave, onCancel) {
-  fetch('./components/edit/edit.html')
-    .then(res => res.text())
-    .then(html => {
-      container.insertAdjacentHTML('beforeend', html);
+export function mountEdit(data, onSave, onCancel) {
 
-      const modal = container.querySelector('.modal-overlay');
+  Promise.all([
+    fetch('./components/edit/edit.html').then(r => r.text()),
+    loadCSS('./components/edit/edit.css')
+  ]).then(([html]) => {
 
-      const form = modal.querySelector('[data-testid="test-todo-edit-form"]');
+    document.body.insertAdjacentHTML('beforeend', html);
 
-      const title = form.querySelector('#edit-title');
-      const desc = form.querySelector('#edit-desc');
-      const priority = form.querySelector('#edit-priority');
-      const due = form.querySelector('#edit-due');
+    const modal    = document.getElementById('edit-modal');
+    const titleEl  = document.getElementById('edit-title');
+    const descEl   = document.getElementById('edit-desc');
+    const priEl    = document.getElementById('edit-priority');
+    const dueEl    = document.getElementById('edit-due');
 
-      // PREFILL
-      title.value = data.title || '';
-      desc.value = data.description || '';
-      priority.value = data.priority || 'Low';
-      due.value = data.due || '';
+    titleEl.value = data.title       || '';
+    descEl.value  = data.description || '';
+    priEl.value   = data.priority    || 'High';
 
-      // CLOSE FUNCTION
-      function close() {
-        modal.remove();
-        onCancel?.();
-      }
+    if (data.due) {
+      dueEl.value = data.due.split('T')[0];
+    }
 
-      modal.querySelector('#modal-close').onclick = close;
+    setTimeout(() => titleEl.focus(), 50);
 
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) close();
-      });
 
-      // SAVE
-      form.querySelector('[data-testid="test-todo-save-button"]').onclick = () => {
-        onSave({
-          title: title.value,
-          description: desc.value,
-          priority: priority.value,
-          due: due.value
-        });
+    function close() {
+      modal.remove();
+      document.getElementById('btn-edit').focus();
+      onCancel();
+    }
 
-        modal.remove();
-      };
-
-      // CANCEL
-      form.querySelector('[data-testid="test-todo-cancel-button"]').onclick = close;
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) close();
     });
+
+
+    document.getElementById('modal-close').addEventListener('click', close);
+
+    document.getElementById('btn-cancel').addEventListener('click', close);
+
+    document.getElementById('btn-save').addEventListener('click', function() {
+      const updated = {
+        title:       titleEl.value.trim() || data.title,
+        description: descEl.value.trim()  || data.description,
+        priority:    priEl.value,
+        due:         dueEl.value ? dueEl.value + 'T17:00:00Z' : data.due
+      };
+      modal.remove();
+      document.getElementById('btn-edit').focus();
+      onSave(updated);
+    });
+
+    document.addEventListener('keydown', function onKey(e) {
+      if (e.key === 'Escape') {
+        document.removeEventListener('keydown', onKey);
+        close();
+      }
+    });
+
+  });
+}
+
+function loadCSS(href) {
+  return new Promise((resolve) => {
+    if (document.querySelector('link[href="' + href + '"]')) {
+      resolve();
+      return;
+    }
+    const link = document.createElement('link');
+    link.rel   = 'stylesheet';
+    link.href  = href;
+    link.onload = resolve;
+    document.head.appendChild(link);
+  });
 }
