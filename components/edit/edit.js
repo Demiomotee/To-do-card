@@ -1,49 +1,152 @@
-export function mountEdit(container, data, onSave, onCancel) {
-  fetch('./components/edit/edit.html')
-    .then(res => res.text())
-    .then(html => {
-      container.insertAdjacentHTML('beforeend', html);
+export function mountEdit(data, onSave, onCancel) {
+  // Remove any existing modal first
+  document.querySelector('.modal-overlay')?.remove();
 
-      const modal = container.querySelector('.modal-overlay');
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.setAttribute('role', 'dialog');
+  overlay.setAttribute('aria-modal', 'true');
+  overlay.setAttribute('aria-labelledby', 'modal-title');
 
-      const form = modal.querySelector('[data-testid="test-todo-edit-form"]');
+  // Format datetime for input (local)
+  function toDatetimeLocal(isoStr) {
+    if (!isoStr) return '';
+    const d = new Date(isoStr);
+    const pad = n => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
 
-      const title = form.querySelector('#edit-title');
-      const desc = form.querySelector('#edit-desc');
-      const priority = form.querySelector('#edit-priority');
-      const due = form.querySelector('#edit-due');
+  const priorityVal = (data.priority || 'High').trim();
+  const selClass = priorityVal === 'High' ? 'sel-high' : priorityVal === 'Medium' ? 'sel-medium' : 'sel-low';
 
-      // PREFILL
-      title.value = data.title || '';
-      desc.value = data.description || '';
-      priority.value = data.priority || 'Low';
-      due.value = data.due || '';
+  overlay.innerHTML = `
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 id="modal-title">Edit Task</h2>
+        <button class="modal-close" id="modal-close" aria-label="Close modal">✕</button>
+      </div>
 
-      // CLOSE FUNCTION
-      function close() {
-        modal.remove();
-        onCancel?.();
-      }
+      <form data-testid="test-todo-edit-form" class="edit-form" novalidate>
 
-      modal.querySelector('#modal-close').onclick = close;
+        <div class="form-group">
+          <label class="form-label" for="edit-title">Title</label>
+          <input
+            id="edit-title"
+            data-testid="test-todo-edit-title-input"
+            class="form-input"
+            type="text"
+            value="${escHtml(data.title || '')}"
+            placeholder="Task title"
+            required
+          />
+        </div>
 
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) close();
-      });
+        <div class="form-group">
+          <label class="form-label" for="edit-desc">Description</label>
+          <textarea
+            id="edit-desc"
+            data-testid="test-todo-edit-description-input"
+            class="form-textarea"
+            placeholder="What needs to be done?"
+          >${escHtml(data.description || '')}</textarea>
+        </div>
 
-      // SAVE
-      form.querySelector('[data-testid="test-todo-save-button"]').onclick = () => {
-        onSave({
-          title: title.value,
-          description: desc.value,
-          priority: priority.value,
-          due: due.value
-        });
+        <div class="form-row">
+          <div class="form-group" style="margin-bottom:0">
+            <label class="form-label" for="edit-priority">Priority</label>
+            <div class="select-wrap">
+              <select
+                id="edit-priority"
+                data-testid="test-todo-edit-priority-select"
+                class="form-select ${selClass}"
+              >
+                <option value="High"   ${priorityVal==='High'   ? 'selected' : ''}>🔴 High</option>
+                <option value="Medium" ${priorityVal==='Medium' ? 'selected' : ''}>🟡 Medium</option>
+                <option value="Low"    ${priorityVal==='Low'    ? 'selected' : ''}>🟢 Low</option>
+              </select>
+            </div>
+          </div>
 
-        modal.remove();
-      };
+          <div class="form-group" style="margin-bottom:0">
+            <label class="form-label" for="edit-due">Due Date</label>
+            <div class="datetime-wrap">
+              <input
+                id="edit-due"
+                data-testid="test-todo-edit-due-date-input"
+                class="form-datetime"
+                type="datetime-local"
+                value="${toDatetimeLocal(data.due)}"
+              />
+            </div>
+          </div>
+        </div>
 
-      // CANCEL
-      form.querySelector('[data-testid="test-todo-cancel-button"]').onclick = close;
+        <div class="modal-actions">
+          <button
+            type="button"
+            data-testid="test-todo-cancel-button"
+            class="modal-btn modal-btn-cancel"
+          >Cancel</button>
+          <button
+            type="button"
+            data-testid="test-todo-save-button"
+            class="modal-btn modal-btn-save"
+          >Save changes</button>
+        </div>
+
+      </form>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  // Priority select colour update live
+  const prioritySel = overlay.querySelector('#edit-priority');
+  prioritySel.addEventListener('change', function () {
+    this.className = 'form-select ' + (
+      this.value === 'High' ? 'sel-high' :
+      this.value === 'Medium' ? 'sel-medium' : 'sel-low'
+    );
+  });
+
+  // Close helpers
+  function close() {
+    overlay.style.animation = 'fade-in 0.15s ease reverse both';
+    overlay.querySelector('.modal-card').style.animation = 'slide-up 0.15s ease reverse both';
+    setTimeout(() => { overlay.remove(); onCancel?.(); }, 150);
+  }
+
+  overlay.querySelector('#modal-close').addEventListener('click', close);
+  overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+  document.addEventListener('keydown', function escClose(e) {
+    if (e.key === 'Escape') { close(); document.removeEventListener('keydown', escClose); }
+  });
+
+  // Save
+  overlay.querySelector('[data-testid="test-todo-save-button"]').addEventListener('click', () => {
+    const title = overlay.querySelector('#edit-title').value.trim();
+    if (!title) {
+      overlay.querySelector('#edit-title').focus();
+      overlay.querySelector('#edit-title').style.borderColor = '#dc2626';
+      return;
+    }
+    close();
+    onSave({
+      title,
+      description: overlay.querySelector('#edit-desc').value.trim(),
+      priority: overlay.querySelector('#edit-priority').value,
+      due: overlay.querySelector('#edit-due').value
     });
+  });
+
+  // Focus trap — first input
+  setTimeout(() => overlay.querySelector('#edit-title').focus(), 50);
+}
+
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 }
