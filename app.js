@@ -96,7 +96,6 @@ const descEl      = document.getElementById('todo-desc');
 const seeMoreBtn  = document.getElementById('see-more-btn');
 
 function checkDescOverflow() {
-  // Check if text is being clamped
   if (descEl.scrollHeight > descEl.clientHeight + 2) {
     seeMoreBtn.classList.add('visible');
   } else {
@@ -135,44 +134,46 @@ alertClose.addEventListener('click', function() {
 
 
 document.getElementById('btn-edit').addEventListener('click', () => {
-
+  
   const currentData = {
     title:       document.getElementById('todo-title').textContent.trim(),
     description: document.getElementById('todo-desc').textContent.trim(),
     priority:    document.getElementById('priority-badge').textContent.trim(),
-    due:         document.getElementById('due-date-display').getAttribute('datetime')
+    due:         document.getElementById('due-date-display').getAttribute('datetime'),
+    subtasks:    window.cardSubtasks || []
   };
 
   mountEdit(
     currentData,
 
-    (updated) => {
-      document.getElementById('todo-title').textContent = updated.title;
-      document.getElementById('todo-desc').textContent  = updated.description;
-
-  
-      const pb  = document.getElementById('priority-badge');
-      const cls = { High: 'priority-high', Medium: 'priority-medium', Low: 'priority-low' };
-      pb.textContent = updated.priority;
-      pb.className   = 'badge ' + (cls[updated.priority] || 'priority-high');
-      pb.setAttribute('aria-label', 'Priority: ' + updated.priority);
-
-      if (updated.due) {
-        const d      = new Date(updated.due);
-        const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-        const label  = 'Due ' + months[d.getUTCMonth()] + ' ' + d.getUTCDate() + ', ' + d.getUTCFullYear();
-        document.getElementById('due-date-display').textContent = label;
-        document.getElementById('due-date-display').setAttribute('datetime', updated.due);
-        DUE_DATE = new Date(updated.due);
-        updateTimeChip();
-      }
-
-      descEl.classList.remove('expanded');
-      seeMoreBtn.textContent = 'See more';
-      setTimeout(checkDescOverflow, 50);
-
-      showAlert('Changes saved.', 'save');
-    },
+      (updated) => {
+        document.getElementById('todo-title').textContent = updated.title;
+        document.getElementById('todo-desc').textContent  = updated.description;
+      
+        const pb  = document.getElementById('priority-badge');
+        const cls = { High: 'priority-high', Medium: 'priority-medium', Low: 'priority-low' };
+        pb.textContent = updated.priority;
+        pb.className   = 'badge ' + (cls[updated.priority] || 'priority-high');
+        pb.setAttribute('aria-label', 'Priority: ' + updated.priority);
+      
+        if (updated.due) {
+          const d      = new Date(updated.due);
+          const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+          const label  = 'Due ' + months[d.getUTCMonth()] + ' ' + d.getUTCDate() + ', ' + d.getUTCFullYear();
+          document.getElementById('due-date-display').textContent = label;
+          document.getElementById('due-date-display').setAttribute('datetime', updated.due);
+          DUE_DATE = new Date(updated.due);
+          updateTimeChip();
+        }
+      
+        window.cardSubtasks = updated.subtasks;
+      
+        descEl.classList.remove('expanded');
+        seeMoreBtn.textContent = 'See more';
+        setTimeout(checkDescOverflow, 50);
+      
+        showAlert('Changes saved.', 'save');
+      },
     () => {}
   );
 });
